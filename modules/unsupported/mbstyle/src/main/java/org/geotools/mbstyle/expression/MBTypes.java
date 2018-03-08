@@ -19,7 +19,10 @@ package org.geotools.mbstyle.expression;
 
 import org.geotools.mbstyle.parse.MBFormatException;
 import org.json.simple.JSONArray;
+<<<<<<< HEAD
 import org.json.simple.JSONObject;
+=======
+>>>>>>> Adding mapbox expressions implemenation functionality
 import org.opengis.filter.expression.Expression;
 
 /**
@@ -71,6 +74,7 @@ public class MBTypes extends MBExpression {
      *   ["literal", {...} (JSON object literal)]: Object
      * @return
      */
+<<<<<<< HEAD
     private Expression typesLiteral(){
         if (json.size() == 2) {
             if (json.get(1) instanceof JSONObject) {
@@ -85,6 +89,10 @@ public class MBTypes extends MBExpression {
             }
         }
         throw new MBFormatException("The \"literal\" expression requires exactly 1 argument");
+=======
+    public Expression typesLiteral(){
+        return null;
+>>>>>>> Adding mapbox expressions implemenation functionality
     }
 
     /**
