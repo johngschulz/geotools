@@ -84,6 +84,7 @@
             "source": "composite",
             "source-layer": "waterway",
             "layout": {
+<<<<<<< HEAD
               "text-field": [
                 "concat",
                 "c",
@@ -154,6 +155,14 @@
             },
             "paint": {
               "text-color": ["to-rgba", "#006fde"]
+=======
+                "text-field": [
+                    "concat",
+                    "c",
+                    "a",
+                    "t"
+                ]
+>>>>>>> Adding mapbox expressions implemenation functionality
             }
         }
     ]
