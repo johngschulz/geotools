@@ -1,6 +1,7 @@
 package org.geotools.mbstyle.parse;
 
 import org.geotools.mbstyle.MapboxTestUtils;
+import org.geotools.mbstyle.expression.MBColor;
 import org.geotools.mbstyle.expression.MBExpression;
 import org.geotools.mbstyle.expression.MBString;
 import org.json.simple.JSONArray;
@@ -157,7 +158,52 @@ public class MBExpressionParseTest {
     }
 
     // ---- COLOR EXPRESSIONS ---------------------------------------------------------
+    @Test
+    public void testParseRgb() {
 
+        JSONObject layer = testLayersById.get("rgbExpression");
+        Optional<JSONObject> o = traverse(layer, JSONObject.class, "paint");
+        JSONObject j = o.get();
+        assertEquals(JSONArray.class, j.get("text-color").getClass());
+        JSONArray arr = (JSONArray) j.get("text-color");
+        assertEquals(MBColor.class, MBExpression.create(arr).getClass());
+        Expression rgb = MBExpression.transformExpression(arr);
+        Object c = rgb.evaluate(rgb);
+        assertEquals(ff.literal("#006fde"), ff.literal(c));
+    }
+
+    @Test
+    public void testParseRgba() {
+
+        JSONObject layer = testLayersById.get("toRgbaExpression");
+        Optional<JSONObject> o = traverse(layer, JSONObject.class, "paint");
+        JSONObject j = o.get();
+        assertEquals(JSONArray.class, j.get("text-color").getClass());
+        JSONArray arr = (JSONArray) j.get("text-color");
+        assertEquals(MBColor.class, MBExpression.create(arr).getClass());
+        try {
+            MBExpression.transformExpression(arr);
+            fail("expected exception due to \"to-rgba\" function being unsupported");
+        }
+        catch (MBFormatException expected){
+        }
+    }
+
+    @Test
+    public void testParseToRgba() {
+
+        JSONObject layer = testLayersById.get("rgbaExpression");
+        Optional<JSONObject> o = traverse(layer, JSONObject.class, "paint");
+        JSONObject j = o.get();
+        assertEquals(JSONArray.class, j.get("text-color").getClass());
+        JSONArray arr = (JSONArray) j.get("text-color");
+        assertEquals(MBColor.class, MBExpression.create(arr).getClass());
+        try {
+            MBExpression.transformExpression(arr);
+            fail("expected exception due to \"rgba\" function being unsupported");
+        } catch (MBFormatException expected) {
+        }
+    }
 
     // ---- DECISION EXPRESSIONS ---------------------------------------------------------
 
