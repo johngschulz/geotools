@@ -20,35 +20,42 @@ import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.opengis.filter.capability.FunctionName;
 
+import java.awt.*;
+
 import static org.geotools.filter.capability.FunctionNameImpl.parameter;
 
 /**
- * Generate a hexadecimal value from an rgb value in the range of 0-255.
+ * Generate a rgb color from integer values between 0-255.
  */
-public class ToHexFunction extends FunctionExpressionImpl {
+public class ToRgb extends FunctionExpressionImpl {
 
-    public static FunctionName NAME = new FunctionNameImpl("tohex",
-            parameter("int", Integer.class));
+    public static FunctionName NAME = new FunctionNameImpl("torgb",
+            parameter("r", Integer.class),
+            parameter("g", Integer.class),
+            parameter("b", Integer.class),
+            parameter("fallback", Color.class));
 
-    public ToHexFunction() {
+    public ToRgb() {
         super(NAME);
     }
 
     public Object evaluate(Object feature) {
         Integer arg0;
+        Integer arg1;
+        Integer arg2;
 
         try { // attempt to get value and perform conversion
-            Number number = getExpression(0).evaluate(feature, Integer.class );
-            arg0 = number.intValue();
+            Number red = getExpression(0).evaluate(feature, Integer.class );
+            arg0 = red.intValue();
+            Number green = getExpression(1).evaluate(feature, Integer.class );
+            arg1 = green.intValue();
+            Number blue = getExpression(2).evaluate(feature, Integer.class );
+            arg2 = blue.intValue();
         } catch (Exception e) {
             // probably a type error
             throw new IllegalArgumentException(
-                    "Filter Function problem for function tohex argument #0 - expected type integer");
+                    "Function problem for function torgb - expected type integer");
         }
-        String hex = Integer.toHexString(arg0);
-        if (hex.length() == 1) {
-            hex = 0 + hex;
-        }
-            return hex;
+        return new Color(arg0, arg1, arg2);
     }
 }

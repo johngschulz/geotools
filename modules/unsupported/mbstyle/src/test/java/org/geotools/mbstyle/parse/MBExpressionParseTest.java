@@ -169,7 +169,7 @@ public class MBExpressionParseTest {
         assertEquals(MBColor.class, MBExpression.create(arr).getClass());
         Expression rgb = MBExpression.transformExpression(arr);
         Object c = rgb.evaluate(rgb);
-        assertEquals(ff.literal("#006fde"), ff.literal(c));
+        assertEquals(new Color(0, 111, 222), c);
     }
 
     @Test
@@ -185,7 +185,7 @@ public class MBExpressionParseTest {
             MBExpression.transformExpression(arr);
             fail("expected exception due to \"to-rgba\" function being unsupported");
         }
-        catch (MBFormatException expected){
+        catch (UnsupportedOperationException expected){
         }
     }
 
@@ -201,7 +201,7 @@ public class MBExpressionParseTest {
         try {
             MBExpression.transformExpression(arr);
             fail("expected exception due to \"rgba\" function being unsupported");
-        } catch (MBFormatException expected) {
+        } catch (UnsupportedOperationException expected) {
         }
     }
 

@@ -51,26 +51,26 @@ public class MBColor extends MBExpression{
             Expression er = parse.string(json, 1);
             er = transformLiteral(er);
             Function roundr = ff.function("round_2", er);
-            Function hexr = ff.function("tohex", roundr);
+//            Function hexr = ff.function("tohex", roundr);
 
-            rgb.add(hexr);
+//            rgb.add(hexr);
 
             Expression eg = parse.string(json, 2);
             eg = transformLiteral(eg);
             Function roundg = ff.function("round_2", eg);
-            Function hexg = ff.function("tohex", roundg);
-            rgb.add(hexg);
+//            Function hexg = ff.function("tohex", roundg);
+//            rgb.add(hexg);
 
             Expression eb = parse.string(json, 3);
             eb = transformLiteral(eb);
             Function roundb = ff.function("round_2", eb);
-            Function hexb = ff.function("tohex", roundb);
-            rgb.add(hexb);
+//            Function hexb = ff.function("tohex", roundb);
+//            rgb.add(hexb);
 
             Expression[] args = new Expression[rgb.size()];
             args = rgb.toArray(args);
-            Function concat = ff.function("Concatenate", args);
-            return concat;
+            Function color = ff.function("torgb", roundr, roundg, roundb);
+            return color;
         } else {
             throw new MBFormatException("Expression \"rgb\" requires exactly 3 arguments");
         }
@@ -84,7 +84,7 @@ public class MBColor extends MBExpression{
      */
     // Currently unsupported
     public Expression colorRGBA(){
-            throw new MBFormatException("RGBA colors are currently unsupported");
+            throw new UnsupportedOperationException("RGBA colors are currently unsupported");
 //        }
     }
 
@@ -95,7 +95,7 @@ public class MBColor extends MBExpression{
      */
     // Currently unsupported
     public Expression colorToRGBA(){
-        throw new MBFormatException("RGBA colors are currently unsupported.");
+        throw new UnsupportedOperationException("RGBA colors are currently unsupported.");
     }
 
     @Override

@@ -41,7 +41,7 @@ public class MBFunctionFactory implements FunctionFactory {
         functionList.add(ExponentialFunction.NAME);
         functionList.add(CSSFunction.NAME);
         functionList.add(DefaultIfNullFunction.NAME);
-        functionList.add(ToHexFunction.NAME);
+        functionList.add(ToRgb.NAME);
         return Collections.unmodifiableList(functionList);
     }
 
@@ -84,8 +84,8 @@ public class MBFunctionFactory implements FunctionFactory {
             f.setFallbackValue(fallback);
             return f;
         }
-        if (ToHexFunction.NAME.getFunctionName().equals(name)){
-            ToHexFunction f = new ToHexFunction();
+        if (ToRgb.NAME.getFunctionName().equals(name)){
+            ToRgb f = new ToRgb();
             f.setParameters(args);
             f.setFallbackValue(fallback);
             return f;
