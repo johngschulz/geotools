@@ -51,24 +51,16 @@ public class MBColor extends MBExpression{
             Expression er = parse.string(json, 1);
             er = transformLiteral(er);
             Function roundr = ff.function("round_2", er);
-//            Function hexr = ff.function("tohex", roundr);
-
-//            rgb.add(hexr);
 
             Expression eg = parse.string(json, 2);
             eg = transformLiteral(eg);
             Function roundg = ff.function("round_2", eg);
-//            Function hexg = ff.function("tohex", roundg);
-//            rgb.add(hexg);
+
 
             Expression eb = parse.string(json, 3);
             eb = transformLiteral(eb);
             Function roundb = ff.function("round_2", eb);
-//            Function hexb = ff.function("tohex", roundb);
-//            rgb.add(hexb);
-
-            Expression[] args = new Expression[rgb.size()];
-            args = rgb.toArray(args);
+            
             Function color = ff.function("torgb", roundr, roundg, roundb);
             return color;
         } else {
