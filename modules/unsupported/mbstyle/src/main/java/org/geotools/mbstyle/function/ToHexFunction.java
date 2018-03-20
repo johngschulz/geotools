@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2017, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2018, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -23,7 +23,7 @@ import org.opengis.filter.capability.FunctionName;
 import static org.geotools.filter.capability.FunctionNameImpl.parameter;
 
 /**
- * Generate a hexidecimal value from an rgb value in the range of 0-255.
+ * Generate a hexadecimal value from an rgb value in the range of 0-255.
  */
 public class ToHexFunction extends FunctionExpressionImpl {
 
