@@ -1,9 +1,14 @@
 package org.geotools.mbstyle.parse;
 
+import org.geotools.mbstyle.MBStyle;
 import org.geotools.mbstyle.MapboxTestUtils;
 import org.geotools.mbstyle.expression.MBColor;
 import org.geotools.mbstyle.expression.MBExpression;
 import org.geotools.mbstyle.expression.MBString;
+import org.geotools.mbstyle.layer.SymbolMBLayer;
+import org.geotools.mbstyle.transform.MBStyleTransformer;
+import org.geotools.styling.FeatureTypeStyle;
+import org.geotools.styling.TextSymbolizer;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
@@ -16,6 +21,7 @@ import org.opengis.filter.expression.Function;
 import java.awt.*;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -27,11 +33,12 @@ public class MBExpressionParseTest {
     Map<String, JSONObject> testLayersById = new HashMap<>();
     MBObjectParser parse;
     FilterFactory2 ff;
+    JSONObject mbstyle;
 
     @Before
     public void setUp() throws IOException, ParseException {
-        JSONObject jsonObject = MapboxTestUtils.parseTestStyle("expressionParseTest.json");
-        JSONArray layers = (JSONArray) jsonObject.get("layers");
+        mbstyle = MapboxTestUtils.parseTestStyle("expressionParseTest.json");
+        JSONArray layers = (JSONArray) mbstyle.get("layers");
         for (Object o : layers) {
             JSONObject layer = (JSONObject) o;
             testLayersById.put((String) layer.get("id"), layer);
@@ -203,6 +210,16 @@ public class MBExpressionParseTest {
             fail("expected exception due to \"rgba\" function being unsupported");
         } catch (UnsupportedOperationException expected) {
         }
+    }
+
+    @Test
+    public void testRgbSldTransformation() {
+        MBStyle rgbTest = MBStyle.create(mbstyle);
+        SymbolMBLayer rgbLayer = (SymbolMBLayer) rgbTest.layer("rgbExpression");
+        List<FeatureTypeStyle> rgbFeatures = rgbLayer.transformInternal(rgbTest);
+        Color sldColor = (((TextSymbolizer) rgbFeatures.get(0).rules().get(0).getSymbolizers()[0]).getFill().getColor().
+                evaluate(null, Color.class));
+        assertEquals(new Color(0, 111, 222), sldColor);
     }
 
     // ---- DECISION EXPRESSIONS ---------------------------------------------------------

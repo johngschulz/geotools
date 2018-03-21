@@ -23,9 +23,6 @@ import org.json.simple.JSONArray;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Function;
 
-import java.awt.*;
-import java.util.ArrayList;
-
 /**
  * A class to transform mapbox color expressions into geotools expressions.
  */
@@ -44,10 +41,6 @@ public class MBColor extends MBExpression{
      */
     public Expression colorRGB() {
         if (json.size() == 4) {
-
-            ArrayList<Expression> rgb = new ArrayList<>();
-            rgb.add(ff.literal("#"));
-
             Expression er = parse.string(json, 1);
             er = transformLiteral(er);
             Function roundr = ff.function("round_2", er);
