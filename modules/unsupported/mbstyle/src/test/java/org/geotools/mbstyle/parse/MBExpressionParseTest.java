@@ -23,6 +23,7 @@ import org.geotools.mbstyle.expression.MBExpression;
 import org.geotools.mbstyle.expression.MBString;
 import org.geotools.mbstyle.layer.SymbolMBLayer;
 import org.geotools.styling.FeatureTypeStyle;
+import org.geotools.styling.SLDTransformer;
 import org.geotools.styling.TextSymbolizer;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -41,6 +42,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 
@@ -235,6 +237,13 @@ public class MBExpressionParseTest {
         Color sldColor = (((TextSymbolizer) rgbFeatures.get(0).rules().get(0).getSymbolizers()[0]).getFill().getColor().
                 evaluate(null, Color.class));
         assertEquals(new Color(0, 111, 222), sldColor);
+        try {
+            String xml = new SLDTransformer().transform(rgbFeatures.get(0));
+            assertTrue(xml.contains("<sld:Fill><sld:CssParameter name=\"fill\"><ogc:Function name=\"torgb\">" +
+                    "<ogc:Function name=\"round_2\"><ogc:Literal>0</ogc:Literal></ogc:Function>" +
+                    "<ogc:Function name=\"round_2\"><ogc:Literal>111</ogc:Literal></ogc:Function><ogc:Function name=\"round_2\">" +
+                    "<ogc:Literal>222</ogc:Literal></ogc:Function></ogc:Function></sld:CssParameter></sld:Fill>"));
+        } catch(Exception e) { }
     }
 
     // ---- DECISION EXPRESSIONS ---------------------------------------------------------
