@@ -20,7 +20,10 @@ package org.geotools.mbstyle.expression;
 import org.geotools.mbstyle.parse.MBFormatException;
 import org.geotools.mbstyle.parse.MBObjectParser;
 import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.opengis.filter.expression.Expression;
+
+import java.util.List;
 
 public class MBLookup extends MBExpression {
     public MBLookup(JSONArray json) {
@@ -33,7 +36,15 @@ public class MBLookup extends MBExpression {
      *   ["at", number, array]: ItemType
      * @return
      */
-    public Expression lookupAt(){ return null;}
+    public Expression lookupAt(){
+        if (json.size() == 3 && json.get(2) instanceof List){
+            List list = (List) json.get(2);
+            Integer at = (Integer) parse.value(json, 1);
+            Object o = list.get(at);
+            return ff.literal(o);
+        }
+        throw new MBFormatException("The \"at\" expression requires an integer value at index 1, and array value at index 2");
+    }
 
     /**
      * Retrieves a property value from the current feature's properties, or from another object if a second argument
@@ -43,7 +54,24 @@ public class MBLookup extends MBExpression {
      *   ["get", string, object]: value
      * @return
      */
-    public Expression lookupGet(){ return null;}
+    public Expression lookupGet() {
+        if (json.size() == 2 || json.size() == 3) {
+            if (json.size() == 2) {
+                Expression property = parse.string(json, 1);
+                String s =(property).evaluate(null, String.class);
+                return ff.property(s);
+            }
+            if (json.size() == 3) {
+                Expression property = parse.string(json, 1);
+                String s = (property).evaluate(null, String.class);
+                Expression e = parse.string(json, 2);
+                JSONObject jo = (e.evaluate(null, JSONObject.class));
+                Object p = jo.get(s);
+                return ff.literal(p);
+            }
+        }
+        throw new MBFormatException("Expression \"get\" requires a maximum of 2 arguments.");
+    }
 
     /**
      * Tests for the presence of an property value in the current feature's properties, or from another object
@@ -53,7 +81,24 @@ public class MBLookup extends MBExpression {
      *   ["has", string, object]: boolean
      * @return
      */
-    public Expression lookupHas(){ return null;}
+    public Expression lookupHas() {
+        if (json.size() == 2 || json.size() == 3) {
+            if (json.size() == 2) {
+                String value = parse.get(json, 1);
+//             Boolean contained = assert parent.containsKey(value);
+            }
+            if (json.size() == 3) {
+                String value = parse.get(json, 1);
+                Object o = parse.string(json, 2);
+                if (o instanceof Expression){
+                    JSONObject jo = ((Expression) o).evaluate(null, JSONObject.class);
+                    Boolean contained = (jo).containsKey(value);
+                    return ff.literal(contained);
+                }
+            }
+        }
+        throw new MBFormatException("Expression \"has\" requires 1 or 2 arguments " + json.size() + " arguments found");
+    }
 
     /**
      * Gets the length of an array or string.
@@ -62,7 +107,19 @@ public class MBLookup extends MBExpression {
      *   ["length", array]: number
      * @return
      */
-    public Expression lookupLength(){ return null;}
+    public Expression lookupLength() {
+        Integer length;
+        Object o = json.get(1);
+        if (o instanceof String) {
+            length = ((String) json.get(1)).length();
+            return ff.literal(length);
+        } else if (o instanceof List) {
+            length = ((List) json.get(1)).size();
+            return ff.literal(length);
+        } else {
+            throw new MBFormatException("Expression \"length\" requires an argument of type string or array, found " + o.getClass());
+        }
+    }
 
     @Override
     public Expression getExpression() throws MBFormatException {
