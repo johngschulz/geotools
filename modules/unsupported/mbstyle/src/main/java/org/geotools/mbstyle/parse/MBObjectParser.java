@@ -260,17 +260,32 @@ public class MBObjectParser {
     /**
      * Access a literal value (string, numeric, or boolean).
      * 
-     * @param index
+     * @param json JSONArray object to parse.
+     * @param index position in the provided array for which to retrieve a value.
      * @return required string, numeric or boolean
      * @throws MBFormatException if required index not available.
      */
     public Object value(JSONArray json, int index) {
+        return value(json, index, false);
+    }
+
+    /**
+     * Access a literal value (string, numeric, boolean or null).
+     *
+     * @param json JSONArray object to parse.
+     * @param index position in the provided array for which to retrieve a value.
+     * @param treatNullAsLiteral true if nulls should be treated as literals, false otherwise.
+     * @return required string, numeric, boolean or null.
+     * @throws MBFormatException if required index not available.
+     */
+    public Object value(JSONArray json, int index, boolean treatNullAsLiteral) {
         if (json == null) {
             throw new IllegalArgumentException("json required");
         }
         if (index < json.size()) {
             Object value = json.get(index);
-            if (value instanceof String || value instanceof Boolean || value instanceof Number) {
+            if (value instanceof String || value instanceof Boolean || value instanceof Number
+                || (treatNullAsLiteral && value == null)) {
                 return value;
             } if (value instanceof JSONArray){
                 return ff.literal(MBExpression.transformExpression(((JSONArray) value)));
