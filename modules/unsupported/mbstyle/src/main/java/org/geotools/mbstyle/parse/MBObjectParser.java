@@ -266,26 +266,12 @@ public class MBObjectParser {
      * @throws MBFormatException if required index not available.
      */
     public Object value(JSONArray json, int index) {
-        return value(json, index, false);
-    }
-
-    /**
-     * Access a literal value (string, numeric, boolean or null).
-     *
-     * @param json JSONArray object to parse.
-     * @param index position in the provided array for which to retrieve a value.
-     * @param treatNullAsLiteral true if nulls should be treated as literals, false otherwise.
-     * @return required string, numeric, boolean or null.
-     * @throws MBFormatException if required index not available.
-     */
-    public Object value(JSONArray json, int index, boolean treatNullAsLiteral) {
         if (json == null) {
             throw new IllegalArgumentException("json required");
         }
         if (index < json.size()) {
             Object value = json.get(index);
-            if (value instanceof String || value instanceof Boolean || value instanceof Number
-                || (treatNullAsLiteral && value == null)) {
+            if (value instanceof String || value instanceof Boolean || value instanceof Number) {
                 return value;
             } if (value instanceof JSONArray){
                 return ff.literal(MBExpression.transformExpression(((JSONArray) value)));
@@ -293,6 +279,7 @@ public class MBObjectParser {
         }
         throw new MBFormatException(context.getSimpleName() + " requires [" + index + "] string, numeric or boolean");
     }
+
     /**
      * Access a literal value (string, numeric, or boolean).
      * 
@@ -1054,24 +1041,25 @@ public class MBObjectParser {
     public Expression string(JSONArray json, int index) {
         Object obj = json.get(index);
         if (obj == null) {
-            return ff.literal("");
+            return ff.literal(null);
         } else if (obj instanceof String) {
             String str = (String) obj;
             return ff.literal(str);
         } else if (obj instanceof Number) {
             Number number = (Number) obj;
-            return ff.literal(number.toString());
+            return ff.literal(number);
         } else if (obj instanceof Boolean) {
             Boolean bool = (Boolean) obj;
-            return ff.literal(bool.toString());
+            return ff.literal(bool);
         } else if (obj instanceof JSONObject) {
             MBFunction function = new MBFunction(this, (JSONObject) obj);
             return function.function(String.class);
         } else if (obj instanceof JSONArray) {
-            if (((JSONArray) obj).get(0) instanceof String) {
+            if (((JSONArray) obj).get(0) instanceof String &&
+                MBExpression.canCreate(((JSONArray) obj).get(0).toString())) {
                 return MBExpression.transformExpression((JSONArray)obj);
             } else {
-                throw new MBFormatException(context + " string from JSONArray not supported");
+                return ff.literal(obj);
             }
         } else {
             throw new IllegalArgumentException("json contents invalid, " + context
