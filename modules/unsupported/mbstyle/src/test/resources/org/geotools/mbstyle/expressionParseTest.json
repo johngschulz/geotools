@@ -280,7 +280,7 @@
             "source": "composite",
             "source-layer": "waterway",
             "layout": {
-                "text-field": "testrgba"
+                "text-field": ["has", "name"]
             },
             "paint": {
                 "text-color": ["has", "color", {"color":"#006fde", "text":"text"}]
