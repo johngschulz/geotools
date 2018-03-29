@@ -257,73 +257,7 @@ public class MBExpressionParseTest {
 
 
     // ---- LOOKUP EXPRESSIONS ---------------------------------------------------------
-    /**
-     * Verify that a upcase string expression can be parsed correctly.
-     */
-    @Test
-    public void testParseGetExpression() {
 
-        JSONObject layer = testLayersById.get("upcaseExpression");
-        Optional<JSONObject> o = traverse(layer, JSONObject.class, "layout");
-        JSONObject j = o.get();
-        assertEquals(JSONArray.class, j.get("text-field").getClass());
-        JSONArray arr = (JSONArray) j.get("text-field");
-        assertEquals(MBString.class, MBExpression.create(arr).getClass());
-        Expression upcase = MBExpression.transformExpression(arr);
-        Object up = upcase.evaluate(upcase);
-        assertEquals(ff.literal("UPCASING STRING"), ff.literal(up));
-    }
-
-    /**
-     * Verify that a upcase string expression can be parsed correctly.
-     */
-    @Test
-    public void testParseAtExpression() {
-
-        JSONObject layer = testLayersById.get("upcaseExpression");
-        Optional<JSONObject> o = traverse(layer, JSONObject.class, "layout");
-        JSONObject j = o.get();
-        assertEquals(JSONArray.class, j.get("text-field").getClass());
-        JSONArray arr = (JSONArray) j.get("text-field");
-        assertEquals(MBString.class, MBExpression.create(arr).getClass());
-        Expression upcase = MBExpression.transformExpression(arr);
-        Object up = upcase.evaluate(upcase);
-        assertEquals(ff.literal("UPCASING STRING"), ff.literal(up));
-    }
-
-    /**
-     * Verify that a upcase string expression can be parsed correctly.
-     */
-    @Test
-    public void testParseLengthExpression() {
-
-        JSONObject layer = testLayersById.get("upcaseExpression");
-        Optional<JSONObject> o = traverse(layer, JSONObject.class, "layout");
-        JSONObject j = o.get();
-        assertEquals(JSONArray.class, j.get("text-field").getClass());
-        JSONArray arr = (JSONArray) j.get("text-field");
-        assertEquals(MBString.class, MBExpression.create(arr).getClass());
-        Expression upcase = MBExpression.transformExpression(arr);
-        Object up = upcase.evaluate(upcase);
-        assertEquals(ff.literal("UPCASING STRING"), ff.literal(up));
-    }
-
-    /**
-     * Verify that a upcase string expression can be parsed correctly.
-     */
-    @Test
-    public void testParseHasExpression() {
-
-        JSONObject layer = testLayersById.get("upcaseExpression");
-        Optional<JSONObject> o = traverse(layer, JSONObject.class, "layout");
-        JSONObject j = o.get();
-        assertEquals(JSONArray.class, j.get("text-field").getClass());
-        JSONArray arr = (JSONArray) j.get("text-field");
-        assertEquals(MBString.class, MBExpression.create(arr).getClass());
-        Expression upcase = MBExpression.transformExpression(arr);
-        Object up = upcase.evaluate(upcase);
-        assertEquals(ff.literal("UPCASING STRING"), ff.literal(up));
-    }
 
     // ---- MATH EXPRESSIONS ---------------------------------------------------------
 

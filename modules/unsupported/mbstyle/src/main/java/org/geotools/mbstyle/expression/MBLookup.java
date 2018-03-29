@@ -18,7 +18,6 @@
 package org.geotools.mbstyle.expression;
 
 import org.geotools.mbstyle.parse.MBFormatException;
-import org.geotools.mbstyle.parse.MBObjectParser;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.opengis.filter.expression.Expression;
@@ -26,6 +25,7 @@ import org.opengis.filter.expression.Expression;
 import java.util.List;
 
 public class MBLookup extends MBExpression {
+
     public MBLookup(JSONArray json) {
         super(json);
     }
@@ -37,13 +37,19 @@ public class MBLookup extends MBExpression {
      * @return
      */
     public Expression lookupAt(){
-        if (json.size() == 3 && json.get(2) instanceof List){
-            List list = (List) json.get(2);
-            Integer at = (Integer) parse.value(json, 1);
-            Object o = list.get(at);
-            return ff.literal(o);
+        // requires an instance of a "literal" array expression
+        if (json.size() == 3 && json.get(2) instanceof JSONArray){
+//            Expression e = ff.literal(json.get(2));
+            Expression e = parse.string(json,2);
+            if (e.evaluate(null, JSONArray.class) != null) {
+                JSONArray arr = e.evaluate(null, JSONArray.class);
+                Integer at = parse.string(json, 1).evaluate(null, Integer.class);
+                Expression value = parse.string(arr, at);
+                return value;
+            }
         }
-        throw new MBFormatException("The \"at\" expression requires an integer value at index 1, and array value at index 2");
+        throw new MBFormatException("The \"at\" expression requires an integer value at index 1, and a literal" +
+                " array value at index 2");
     }
 
     /**
@@ -58,7 +64,7 @@ public class MBLookup extends MBExpression {
         if (json.size() == 2 || json.size() == 3) {
             if (json.size() == 2) {
                 Expression property = parse.string(json, 1);
-                String s =(property).evaluate(null, String.class);
+                String s = property.evaluate(null, String.class);
                 return ff.property(s);
             }
             if (json.size() == 3) {
@@ -84,16 +90,25 @@ public class MBLookup extends MBExpression {
     public Expression lookupHas() {
         if (json.size() == 2 || json.size() == 3) {
             if (json.size() == 2) {
-                String value = parse.get(json, 1);
-//             Boolean contained = assert parent.containsKey(value);
+                Expression value = parse.string(json, 1);
+                String s = value.evaluate(null, String.class);
+                return ff.function("PropertyExists", ff.literal(s));
             }
             if (json.size() == 3) {
-                String value = parse.get(json, 1);
-                Object o = parse.string(json, 2);
-                if (o instanceof Expression){
-                    JSONObject jo = ((Expression) o).evaluate(null, JSONObject.class);
-                    Boolean contained = (jo).containsKey(value);
+                String svalue;
+                Expression value = parse.string(json, 1);
+                if (value.evaluate(value) instanceof String){
+                    svalue = value.evaluate(null, String.class);
+                } else{
+                    throw new MBFormatException("\"has\" requires an instance of type String for the first argument");
+                }
+                Expression e = parse.string(json, 2);
+                if (e.evaluate(e) instanceof JSONObject ){
+                    JSONObject jo = e.evaluate(null, JSONObject.class);
+                    Boolean contained = jo.containsKey(svalue);
                     return ff.literal(contained);
+                } else{
+                    throw new MBFormatException("\"has\" requires an instance of a JSONObject for the second argument");
                 }
             }
         }
@@ -108,16 +123,14 @@ public class MBLookup extends MBExpression {
      * @return
      */
     public Expression lookupLength() {
-        Integer length;
-        Object o = json.get(1);
-        if (o instanceof String) {
-            length = ((String) json.get(1)).length();
-            return ff.literal(length);
-        } else if (o instanceof List) {
-            length = ((List) json.get(1)).size();
-            return ff.literal(length);
+        Expression e = parse.string(json,1);
+        if (e.evaluate(e) instanceof String) {
+            return ff.function("strLength", e);
+        } else if (e.evaluate(e) instanceof List) {
+            return ff.function("listSize", e);
         } else {
-            throw new MBFormatException("Expression \"length\" requires an argument of type string or array, found " + o.getClass());
+            throw new MBFormatException("Expression \"length\" requires an argument of literal string or" +
+                    " literal array");
         }
     }
 

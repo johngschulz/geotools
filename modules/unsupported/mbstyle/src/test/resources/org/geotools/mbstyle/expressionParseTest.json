@@ -54,6 +54,7 @@
       }
     },
 
+<<<<<<< HEAD
     {
       "id": "upcaseExpression",
       "type": "symbol",
@@ -158,3 +159,157 @@
     }
   ]
 }
+=======
+        {
+            "id": "upcaseExpression",
+            "type": "symbol",
+            "source": "composite",
+            "source-layer": "waterway",
+            "layout": {
+                "text-field": [
+                    "upcase",
+                    "upcasing string"
+                ]
+            }
+        },
+        {
+            "id": "downcaseExpression",
+            "type": "symbol",
+            "source": "composite",
+            "source-layer": "waterway",
+            "layout": {
+                "text-field": [
+                    "downcase",
+                    "DOWNCASING STRING"
+                ]
+            }
+        },
+        {
+            "id": "concatExpression",
+            "type": "symbol",
+            "source": "composite",
+            "source-layer": "waterway",
+            "layout": {
+              "text-field": [
+                "concat",
+                "c",
+                "a",
+                "t"
+              ]
+            }
+        },
+        {
+            "id": "allStringExpressions",
+            "type": "symbol",
+            "source": "composite",
+            "source-layer": "waterway",
+            "layout": {
+              "text-field": [
+                "concat",
+                ["upcase", "c"],
+                ["downcase","A"],
+                "t"
+              ]
+            }
+        },
+        {
+            "id": "upcaseConcat",
+            "type": "symbol",
+            "source": "composite",
+            "source-layer": "waterway",
+            "layout": {
+                "text-field": [
+                    "upcase",
+                    ["concat",
+                    ["upcase", "c"],
+                    ["downcase","A"],
+                    "t"]]
+            }
+        },
+        {
+            "id": "rgbExpression",
+            "type": "symbol",
+            "source": "composite",
+            "source-layer": "waterway",
+            "layout": {
+              "text-field": "testrgb"
+              },
+            "paint": {
+              "text-color": ["rgb", 0, 111, 222]
+            }
+        },
+        {
+            "id": "rgbaExpression",
+            "type": "symbol",
+            "source": "composite",
+            "source-layer": "waterway",
+            "layout": {
+              "text-field": "testrgba"
+            },
+            "paint": {
+              "text-color": ["rgba", 0, 111, 222, 0.1]
+            }
+        },
+        {
+            "id": "toRgbaExpression",
+            "type": "symbol",
+            "source": "composite",
+            "source-layer": "waterway",
+            "layout": {
+              "text-field": "testrgba"
+            },
+            "paint": {
+              "text-color": ["to-rgba", "#006fde"]
+            }
+        },
+        {
+            "id": "getExpression",
+            "type": "symbol",
+            "source": "composite",
+            "source-layer": "waterway",
+            "layout": {
+                "text-field": ["get", "name"]
+            },
+            "paint": {
+                "text-color": ["get", "color", {"color": "#006fde"}]
+            }
+        },
+        {
+            "id": "hasExpression",
+            "type": "symbol",
+            "source": "composite",
+            "source-layer": "waterway",
+            "layout": {
+                "text-field": "testrgba"
+            },
+            "paint": {
+                "text-color": ["has", "color", {"color":"#006fde", "text":"text"}]
+            }
+        },
+        {
+            "id": "atExpression",
+            "type": "symbol",
+            "source": "composite",
+            "source-layer": "waterway",
+            "layout": {
+                "text-field": "testrgba"
+            },
+            "paint": {
+                "text-color": ["at", 0, ["#006fde", "green", "blue"]]
+            }
+        },
+        {
+            "id": "lengthExpression",
+            "type": "symbol",
+            "source": "composite",
+            "source-layer": "waterway",
+            "layout": {
+                "text-field": ["length", [1, 2, 3, 4, 5, 6, 7, 8, 9]]
+            },
+            "paint": {
+                "text-color": ["length", "123456789"]
+            }
+        }
+    ]
+}
+>>>>>>> MBLookup implementation

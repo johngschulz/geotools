@@ -49,6 +49,7 @@ public class MBFunctionFactory implements FunctionFactory {
         functionList.add(MBFunction_case.NAME);
         functionList.add(MBFunction_coalesce.NAME);
         functionList.add(MBFunction_match.NAME);
+        functionList.add(ListSizeFunction.NAME);
         return Collections.unmodifiableList(functionList);
     }
 
@@ -135,6 +136,12 @@ public class MBFunctionFactory implements FunctionFactory {
         }
         if (MBFunction_match.NAME.getFunctionName().equals(name)) {
             MBFunction_match f = new MBFunction_match();
+            f.setParameters(args);
+            f.setFallbackValue(fallback);
+            return f;
+        }
+        if (ListSizeFunction.NAME.getFunctionName().equals(name)){
+            ListSizeFunction f = new ListSizeFunction();
             f.setParameters(args);
             f.setFallbackValue(fallback);
             return f;
