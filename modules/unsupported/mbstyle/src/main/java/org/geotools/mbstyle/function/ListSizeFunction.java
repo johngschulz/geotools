@@ -22,6 +22,7 @@ import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.opengis.filter.capability.FunctionName;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -31,17 +32,17 @@ public class ListSizeFunction extends FunctionExpressionImpl {
 
     public static FunctionName NAME = new FunctionNameImpl("listSize",
             parameter("size", Integer.class),
-            parameter("list", List.class));
+            parameter("list", Collection.class));
 
     public ListSizeFunction() {
         super(NAME);
     }
 
     public Object evaluate(Object feature) {
-        List arg0;
+        Collection arg0;
 
         try { // attempt to get value and perform conversion
-            arg0 = getExpression(0).evaluate(feature, List.class);
+            arg0 = getExpression(0).evaluate(feature, Collection.class);
 
         } catch (Exception e) // probably a type error
         {

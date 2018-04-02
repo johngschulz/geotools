@@ -271,7 +271,8 @@
                 "text-field": ["get", "name"]
             },
             "paint": {
-                "text-color": ["get", "color", {"color": "#006fde"}]
+                "text-color": ["get", "color", {"color": "#006fde"}],
+                "halo-color": ["get", "text-color", ["at", 0, [{"text-color": "RED"}, {"other-object": "test"}]]]
             }
         },
         {
@@ -283,7 +284,9 @@
                 "text-field": ["has", "name"]
             },
             "paint": {
-                "text-color": ["has", "color", {"color":"#006fde", "text":"text"}]
+                "text-color": ["has", "color", {"color":"#006fde", "text":"text"}],
+                "halo-color": ["has", "text-color", ["at", 1, ["get", "text",{"text":[{"unused": "test"},
+                  {"text-color": ["length", "123456789"]}]}]]]
             }
         },
         {
@@ -295,7 +298,8 @@
                 "text-field": "testrgba"
             },
             "paint": {
-                "text-color": ["at", 0, ["#006fde", "green", "blue"]]
+                "text-color": ["at", 0, ["#006fde", "green", "blue"]],
+                "halo-color": ["at", 0, ["get", "text-color", {"text-color": ["length", "123456789"]}]]
             }
         },
         {
@@ -307,7 +311,8 @@
                 "text-field": ["length", [1, 2, 3, 4, 5, 6, 7, 8, 9]]
             },
             "paint": {
-                "text-color": ["length", "123456789"]
+                "text-color": ["length", "123456789"],
+                "halo-color": ["length", ["at", 1, ["get", "text-color", {"text-color": ["length", "123456789"]}]]]
             }
         }
     ]

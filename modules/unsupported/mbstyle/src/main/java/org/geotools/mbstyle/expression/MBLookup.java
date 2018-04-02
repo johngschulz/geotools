@@ -58,6 +58,8 @@ public class MBLookup extends MBExpression {
      * Example:
      *   ["get", string]: value
      *   ["get", string, object]: value
+     *
+     *   As a note, the mbstyle requires json objects for lookup, and evaluates the object as such.
      * @return
      */
     public Expression lookupGet() {
@@ -85,6 +87,8 @@ public class MBLookup extends MBExpression {
      * Example:
      *   ["has", string]: boolean
      *   ["has", string, object]: boolean
+     *
+     * As a note, the mbstyle requires json objects for lookup, and evaluates the object as such.
      * @return
      */
     public Expression lookupHas() {
