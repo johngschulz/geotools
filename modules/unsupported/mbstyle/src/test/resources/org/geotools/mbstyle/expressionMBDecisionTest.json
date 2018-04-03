@@ -225,7 +225,7 @@
                   "labelInArray",
                   "aLabel", "firstLabel",
                   "bLabel", "secondLabel",
-                  ["myLabel", "yourLabel", "labelInArray"], "arrayLabel",
+                  ["literal", ["myLabel", "yourLabel", "labelInArray"]], "arrayLabel",
                   "defaultLabel"
                   ],
               "match-expressionThirdLabel": ["match",
@@ -239,7 +239,7 @@
                   ["case", ["all", false, true, false], 10, ["any", false, true, false], "labelInArray", true],
                   "aLabel", "firstLabel",
                   "bLabel", "secondLabel",
-                  ["myLabel", "yourLabel", "labelInArray"], "arrayLabel",
+                  ["literal", ["myLabel", "yourLabel", "labelInArray"]], "arrayLabel",
                   "defaultLabel"
                   ],
               "match-expressionLabelThirdLabel": ["match",
@@ -253,12 +253,12 @@
                   ["case", ["all", false, true, false], 10, ["any", false, true, false], "labelInArray", true],
                   ["case", ["all", false, true, false], 10, ["any", false, true, false], "aLabel", true], "firstLabel",
                   ["case", ["all", false, true, false], 10, ["any", false, true, false], "bLabel", true], "secondLabel",
-                  [
+                  ["literal", [
                       ["case",
                           ["all", false, true, false], 10, ["any", false, true, false], "myLabel", true],
                           "yourLabel",
                           "labelInArray"
-                  ], "arrayLabel",
+                  ]], "arrayLabel",
                   "defaultLabel"
                   ]
             }

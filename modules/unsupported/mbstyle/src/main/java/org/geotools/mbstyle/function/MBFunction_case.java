@@ -27,10 +27,40 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Selects the first output whose corresponding test condition evaluates to true.
- * Example: [""case"", condition: boolean, output: OutputType,
- * ...condition: boolean, output: OutputType,
- * ...default: OutputType]: OutputType
+ * MapBox Expression function that will return the expression evaluation result that immediately follows the first
+ * condition expression that evaluates to {@link java.lang.Boolean#TRUE}. If no condition expression evaluates to
+ * {@link java.lang.Boolean#TRUE}, this function will return the expression evaluation of the default expression, if
+ * present. If no condition expression evaluates to {@link java.lang.Boolean#TRUE}, and either there is no default
+ * expression, or the default expression evaluates to null, then a null value is returned.
+ * <p>
+ * Format:
+ * </p>
+ * <pre>
+ *     ["mbCase", &lt;condition expression&gt;, &lt;output expression&gt;, &lt;condition expression&gt;, &lt;output expression&gt;, ..., &lt;default expression&gt;]
+ * </pre>
+ * <p>
+ * Examples:
+ * </p>
+ * <p>
+ * <table border="1" cellpadding="3">
+ *   <tr>
+ *     <th align="center">Expression</th>
+ *     <th align="center">Output</th>
+ *   </tr>
+ *   <tr>
+ *     <td>["mbCase", false, "output1", true, "output2", "default"]</td>
+ *     <td align="center">"output2"</td>
+ *   </tr>
+ *   <tr>
+ *     <td>["mbCase", false, "output1", false, "output2", "default"]</td>
+ *     <td align="center">"default"</td>
+ *   </tr>
+ *   <tr>
+ *     <td>["mbCase", false, "output1", false, "output2"]</td>
+ *     <td align="center">null</td>
+ *   </tr>
+ * </table>
+ * </p>
  */
 class MBFunction_case extends FunctionExpressionImpl {
 
@@ -42,12 +72,18 @@ class MBFunction_case extends FunctionExpressionImpl {
         super(NAME);
     }
 
+    /**
+     * @see org.geotools.filter.FunctionExpressionImpl#setParameters(java.util.List)
+     */
     @Override
     public void setParameters(List<Expression> params) {
         // set the parameters
         this.params = new ArrayList<>(params);
     }
 
+    /**
+     * @see org.geotools.filter.FunctionExpressionImpl#equals(java.lang.Object)
+     */
     @Override
     public Object evaluate(Object feature) {
         int conditionExprssionIndex = 0;

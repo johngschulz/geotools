@@ -27,8 +27,41 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Evaluates each expression in turn until the first non-null value is obtained, and returns that value.
- * Example: ["coalesce", OutputType, OutputType, ...]: OutputType
+ * MapBox Expression function that will return the expression evaluation result of the first expression that evaluates
+ * to a non-null value. If no expression evaluates to a non-null value, this function will return null.
+ * <p>
+ * Format:
+ * </p>
+ * <pre>
+ *     ["mbCoalesce", &lt;expression&gt;, &lt;expression&gt;, &lt;expression&gt;, ...]
+ * </pre>
+ * <p>
+ * Examples:
+ * </p>
+ * <p>
+ * <table border="1" cellpadding="3">
+ *   <tr>
+ *     <th align="center">Expression</th>
+ *     <th align="center">Output</th>
+ *   </tr>
+ *   <tr>
+ *     <td>["mbCoalesce", "aString", false, null]</td>
+ *     <td align="center">"aString"</td>
+ *   </tr>
+ *   <tr>
+ *     <td>["mbCoalesce", null, null, null, "default"]</td>
+ *     <td align="center">"default"</td>
+ *   </tr>
+ *   <tr>
+ *     <td>["mbCoalesce", null, true, null]</td>
+ *     <td align="center">true</td>
+ *   </tr>
+ *   <tr>
+ *     <td>["mbCoalesce", null, null, null]</td>
+ *     <td align="center">null</td>
+ *   </tr>
+ * </table>
+ * </p>
  */
 class MBFunction_coalesce extends FunctionExpressionImpl {
 
@@ -40,12 +73,18 @@ class MBFunction_coalesce extends FunctionExpressionImpl {
         super(NAME);
     }
 
+    /**
+     * @see org.geotools.filter.FunctionExpressionImpl#setParameters(java.util.List)
+     */
     @Override
     public void setParameters(List<Expression> params) {
         // set the parameters
         this.params = new ArrayList<>(params);
     }
 
+    /**
+     * @see org.geotools.filter.FunctionExpressionImpl#equals(java.lang.Object)
+     */
     @Override
     public Object evaluate(Object feature) {
         for (Expression expression : params) {

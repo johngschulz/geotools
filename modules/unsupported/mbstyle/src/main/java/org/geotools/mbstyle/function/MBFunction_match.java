@@ -29,14 +29,47 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Selects the output whose label value matches the input value, or the fallback value if no match is found.
- * The input can be any string or number expression (e.g. ["get", "building_type"]).
- * Each label can either be a single literal value or an array of values.
- * Example: ["match",
- * input: InputType (number or string),
- * label_1: InputType | [InputType, InputType, ...], output_1: OutputType,
- * label_n: InputType | [InputType, InputType, ...], output_n: OutputType,
- * ..., default: OutputType]: OutputType
+ * MapBox Expression function that will return the output expression evaluation result of the output expression that is
+ * associated with the first label that matches the Input expression evaluation value. Each provided label can be a
+ * single expression, or an array of expressions. If no label matches or contains the Input expression evaluation value,
+ * the default expression value is returned, if present. If no label matches or contains the Input expression evaluation
+ * value, and no default expression is provided, null is returned.
+ * <p>
+ * Format:
+ * </p>
+ * <pre>
+ *     ["mbMatch", &lt;Input expression&gt;,
+ *                 &lt;Label expression&gt;, &lt;Output expression&gt;,
+ *                 [&lt;Label expression&gt;, &lt;Label expression&gt;, ...], &lt;Output expression&gt;,
+ *                 &lt;Default expression&gt;]
+ * </pre>
+ * <p>
+ * Examples:
+ * </p>
+ * <p>
+ * <table border="1" cellpadding="3">
+ *   <tr>
+ *     <th align="center">Expression</th>
+ *     <th align="center">Output</th>
+ *   </tr>
+ *   <tr>
+ *     <td>["mbMatch", "anInput", "label1", "output1", "anInput", "output2", "defaultOutput"]</td>
+ *     <td align="center">"output2"</td>
+ *   </tr>
+ *   <tr>
+ *     <td>["mbMatch", "anInput", "label1", "output1", "label2", "output2", ["literal", ["anInput", "anotherInput"]], "output3", "defaultOutput"]</td>
+ *     <td align="center">"output3"</td>
+ *   </tr>
+ *   <tr>
+ *     <td>["mbMatch", "anInput", "label1", "output1", "label2", "output2", "defaultOutput"]</td>
+ *     <td align="center">"defaultOutput"</td>
+ *   </tr>
+ *   <tr>
+ *     <td>["mbMatch", "anInput", "label1", "output1", "label2", "output2", "label2", "output3"]</td>
+ *     <td align="center">null</td>
+ *   </tr>
+ * </table>
+ * </p>
  */
 class MBFunction_match extends FunctionExpressionImpl {
 
@@ -48,12 +81,18 @@ class MBFunction_match extends FunctionExpressionImpl {
         super(NAME);
     }
 
+    /**
+     * @see org.geotools.filter.FunctionExpressionImpl#setParameters(java.util.List)
+     */
     @Override
     public void setParameters(List<Expression> params) {
         // set the parameters
         this.params = new ArrayList<>(params);
     }
 
+    /**
+     * @see org.geotools.filter.FunctionExpressionImpl#equals(java.lang.Object)
+     */
     @Override
     public Object evaluate(Object feature) {
         // get the first expression. It's the InputType to match.

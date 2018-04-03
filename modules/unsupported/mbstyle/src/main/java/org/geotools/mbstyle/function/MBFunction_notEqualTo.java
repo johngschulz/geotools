@@ -23,10 +23,43 @@ import org.geotools.filter.capability.FunctionNameImpl;
 import org.opengis.filter.capability.FunctionName;
 
 /**
- * MapBox Expression function that returns {@link java.lang.Boolean#FALSE} if two Objects are equivalent,
+ * MapBox Expression function that returns {@link java.lang.Boolean#FALSE} if two expressions are equivalent,
  * {@link java.lang.Boolean#TRUE} otherwise. It is slightly different from the GeoTools "notEqualTo" function as it
  * treats NULLs as equal (instead of not equal), and it does not compare Object.toString() values, which would result in
  * false equivalences for things like Boolean.TRUE compared to the literal string "true".
+ * <p>
+ * Format:
+ * </p>
+ * <pre>
+ *     ["mbNotEqualTo", &lt;expression&gt;, &lt;expression&gt;]
+ * </pre>
+ * <p>
+ * Examples:
+ * </p>
+ * <p>
+ * <table border="1" cellpadding="3">
+ *   <tr>
+ *     <th align="center">Expression</th>
+ *     <th align="center">Output</th>
+ *   </tr>
+ *   <tr>
+ *     <td>["mbNotEqualTo", "aString", "aString"]</td>
+ *     <td align="center">false</td>
+ *   </tr>
+ *   <tr>
+ *     <td>["mbNotEqualTo", null, null]</td>
+ *     <td align="center">false</td>
+ *   </tr>
+ *   <tr>
+ *     <td>["mbNotEqualTo", true, "true"]</td>
+ *     <td align="center">true</td>
+ *   </tr>
+ *   <tr>
+ *     <td>["mbNotEqualTo", 5, 5.0]</td>
+ *     <td align="center">false</td>
+ *   </tr>
+ * </table>
+ * </p>
  */
 class MBFunction_notEqualTo extends FunctionExpressionImpl {
 
@@ -39,6 +72,9 @@ class MBFunction_notEqualTo extends FunctionExpressionImpl {
         super(NAME);
     }
 
+    /**
+     * @see org.geotools.filter.FunctionExpressionImpl#equals(java.lang.Object)
+     */
     @Override
     public Object evaluate(Object feature) {
         Object arg0;

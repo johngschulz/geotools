@@ -1059,7 +1059,7 @@ public class MBObjectParser {
                 MBExpression.canCreate(((JSONArray) obj).get(0).toString())) {
                 return MBExpression.transformExpression((JSONArray)obj);
             } else {
-                return ff.literal(obj);
+                throw new MBFormatException(context + " string from JSONArray not supported");
             }
         } else {
             throw new IllegalArgumentException("json contents invalid, " + context

@@ -31,8 +31,36 @@ import java.util.List;
  * {@link java.lang.Boolean#TRUE}, {@link java.lang.Boolean#FALSE} otherwise. This function is implemented as a short-
  * circuit in that it will return {@link java.lang.Boolean#TRUE} for the first expression that evaluates to
  * {@link java.lang.Boolean#TRUE}.
- */
-class MBFunction_any extends FunctionExpressionImpl {
+ * <p>
+ * Format:
+ * </p>
+ * <pre>
+ *     ["mbAny", &lt;condition expression&gt;, &lt;condition expression&gt;, ...]
+ * </pre>
+ * <p>
+ * Examples:
+ * </p>
+ * <p>
+ * <table border="1" cellpadding="3">
+ *   <tr>
+ *     <th align="center">Expression</th>
+ *     <th align="center">Output</th>
+ *   </tr>
+ *   <tr>
+ *     <td>["mbAny", true, true, true]</td>
+ *     <td align="center">true</td>
+ *   </tr>
+ *   <tr>
+ *     <td>["mbAny", true, true, false]</td>
+ *     <td align="center">true</td>
+ *   </tr>
+ *   <tr>
+ *     <td>["mbAny", false, false, false, false]</td>
+ *     <td align="center">false</td>
+ *   </tr>
+ * </table>
+ * </p>
+ */class MBFunction_any extends FunctionExpressionImpl {
 
     public static FunctionName NAME = new FunctionNameImpl("mbAny",
         parameter("mbAny", Boolean.class),
@@ -42,12 +70,18 @@ class MBFunction_any extends FunctionExpressionImpl {
         super(NAME);
     }
 
+    /**
+     * @see org.geotools.filter.FunctionExpressionImpl#setParameters(java.util.List)
+     */
     @Override
     public void setParameters(List<Expression> params) {
         // set the parameters
         this.params = new ArrayList<>(params);
     }
 
+    /**
+     * @see org.geotools.filter.FunctionExpressionImpl#equals(java.lang.Object)
+     */
     @Override
     public Object evaluate(Object feature) {
         // loop over the arguments and ensure at least one evaluates to true
