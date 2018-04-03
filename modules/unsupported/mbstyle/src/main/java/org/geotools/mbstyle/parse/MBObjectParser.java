@@ -475,7 +475,7 @@ public class MBObjectParser {
     }
 
     /**
-     * Retrieve an object of the provided type in the JSONArray at this index, throwing an {@link MBFormatException} if 
+     * Retrieve an object of the provided type in the JSONArray at this index, throwing an {@link MBFormatException} if
      * no object of that type is found at that index of the array.
      *
      * @param type The type of the object to retrieve.
@@ -495,7 +495,7 @@ public class MBObjectParser {
     }
 
     /**
-     * Retrieve an object of the provided type in the JSONObject at this tag, throwing an {@link MBFormatException} if 
+     * Retrieve an object of the provided type in the JSONObject at this tag, throwing an {@link MBFormatException} if
      * no object of that type is found at that tag in the object.
      *
      * @param type  The type of the object to retrieve.
@@ -675,7 +675,7 @@ public class MBObjectParser {
     }
 
     /**
-     * Casts the provided obj to a JSONObject (safely reporting format exception 
+     * Casts the provided obj to a JSONObject (safely reporting format exception
      *
      * @param obj
      * @return JSONObject
@@ -899,7 +899,7 @@ public class MBObjectParser {
      * @param context The json context of the object, used for error messages.
      * @param obj The object to convert
      * @param fallback The fallback value, used when the provided object is null.
-     * @return A numeric expression for the provided object 
+     * @return A numeric expression for the provided object
      */
     private Expression number(String context, Object obj, Number fallback) {
         if (obj == null) {
@@ -993,7 +993,7 @@ public class MBObjectParser {
 
     //
     // STRING
-    //    
+    //
 
     /**
      * Convert the provided object to a string Expression (or function), with a fallback value if the object is null.
