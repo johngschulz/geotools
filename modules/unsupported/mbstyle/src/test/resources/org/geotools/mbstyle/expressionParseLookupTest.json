@@ -32,11 +32,11 @@
             "source": "composite",
             "source-layer": "waterway",
             "layout": {
-                "text-field": ["get", "name"]
+                "text-field": ["get", "Name"]
             },
             "paint": {
-                "text-color": ["get", "color", {"color": "#006fde"}],
-                "halo-color": ["get", "text-color", ["at", 0, [{"text-color": "RED"}, {"other-object": "test"}]]]
+                "text-color": ["get", "color",["literal", {"color": "#006fde"}]],
+                "halo-color": ["get", "text-color", ["at", 0, ["literal",[["literal",{"text-color": "RED"}], ["literal", {"other-object": "test"}]]]]]
             }
         },
         {
@@ -48,9 +48,9 @@
                 "text-field": ["has", "name"]
             },
             "paint": {
-                "text-color": ["has", "color", {"color":"#006fde", "text":"text"}],
-                "halo-color": ["has", "text-color", ["at", 1, ["get", "text",{"text":[{"unused": "test"},
-                  {"text-color": ["length", "123456789"]}]}]]]
+                "text-color": ["has", "color", ["literal", {"color":"#006fde", "text":"text"}]],
+                "halo-color": ["has", "text-color", ["at", 1, ["get", "text",["literal",{"text":[{"unused": "test"},
+                  ["literal",{"text-color": ["length", "123456789"]}]]}]]]]
             }
         },
         {
@@ -62,8 +62,8 @@
                 "text-field": "testrgba"
             },
             "paint": {
-                "text-color": ["at", 0, ["#006fde", "green", "blue"]],
-                "halo-color": ["at", 0, ["get", "text-color", {"text-color": ["length", "123456789"]}]]
+                "text-color": ["at", 0, ["literal", ["#006fde", "green", "blue"]]],
+                "halo-color": ["at", 0, ["get", "text-color", ["literal",{"text-color": ["length", "123456789"]}]]]
             }
         },
         {
@@ -72,11 +72,11 @@
             "source": "composite",
             "source-layer": "waterway",
             "layout": {
-                "text-field": ["length", [1, 2, 3, 4, 5, 6, 7, 8, 9]]
+                "text-field": ["length", ["literal", [1, 2, 3, 4, 5, 6, 7, 8, 9]]]
             },
             "paint": {
                 "text-color": ["length", "123456789"],
-                "halo-color": ["length", ["at", 1, ["get", "text-color", {"text-color": ["length", "123456789"]}]]]
+                "halo-color": ["length", ["at", 1, ["get", "text-color", ["literal", {"text-color": ["length", "123456789"]}]]]]
             }
         }
     ]
