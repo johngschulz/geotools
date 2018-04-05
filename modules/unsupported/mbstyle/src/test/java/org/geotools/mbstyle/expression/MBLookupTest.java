@@ -32,7 +32,7 @@ public class MBLookupTest extends AbstractMBExpressionTest{
 
     @Override
     protected String getTestResourceName() {
-        return "expressionParseLookupTest.json";
+        return "expressionMBLookupTest.json";
     }
 
     @Override
