@@ -29,8 +29,8 @@ import static org.geotools.filter.capability.FunctionNameImpl.parameter;
  */
 public class MBFunction_has extends FunctionExpressionImpl {
     public static FunctionName NAME = new FunctionNameImpl("mbHas",
-            parameter("object", JSONObject.class),
             parameter("value", String.class),
+            parameter("object", JSONObject.class),
             parameter("fallback", Object.class));
 
     public MBFunction_has() {
@@ -38,25 +38,26 @@ public class MBFunction_has extends FunctionExpressionImpl {
     }
 
     public Object evaluate(Object feature) {
-        JSONObject arg0;
-        String arg1;
+        String arg0;
+        JSONObject arg1;
 
         try { // attempt to get value and perform conversion
-            arg0 = getExpression(0).evaluate(feature, JSONObject.class);
-
-        } catch (Exception e) // probably a type error
-        {
-            throw new IllegalArgumentException(
-                    "Filter Function problem for function mbHas argument #0 - expected type JSONObject");
-        }
-        try { // attempt to get value and perform conversion
-            arg1 = getExpression(1).evaluate(feature, String.class);
+            arg0 = getExpression(0).evaluate(feature, String.class);
 
         } catch (Exception e) // probably a type error
         {
             throw new IllegalArgumentException(
                     "Filter Function problem for function mbHas argument #1 - expected type String");
         }
-        return arg0.containsKey(arg1);
+        try { // attempt to get value and perform conversion
+            arg1 = getExpression(1).evaluate(feature, JSONObject.class);
+
+        } catch (Exception e) // probably a type error
+        {
+            throw new IllegalArgumentException(
+                    "Filter Function problem for function mbHas argument #0 - expected type JSONObject");
+        }
+
+        return arg1.containsKey(arg0);
     }
 }

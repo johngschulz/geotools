@@ -21,8 +21,6 @@ import org.geotools.mbstyle.parse.MBFormatException;
 import org.json.simple.JSONArray;
 import org.opengis.filter.expression.Expression;
 
-import java.util.List;
-
 public class MBLookup extends MBExpression {
 
     public MBLookup(JSONArray json) {
@@ -90,7 +88,7 @@ public class MBLookup extends MBExpression {
             if (json.size() == 3) {
                 Expression value = parse.string(json, 1);
                 Expression object = parse.string(json, 2);
-                return ff.function("mbHas", object, value);
+                return ff.function("mbHas", value, object);
             }
         }
         throw new MBFormatException("Expression \"has\" requires 1 or 2 arguments " + json.size() + " arguments found");
@@ -105,14 +103,7 @@ public class MBLookup extends MBExpression {
      */
     public Expression lookupLength() {
         Expression e = parse.string(json,1);
-        if (e.evaluate(e) instanceof String) {
-            return ff.function("strLength", e);
-        } else if (e.evaluate(e) instanceof List) {
-            return ff.function("listSize", e);
-        } else {
-            throw new MBFormatException("Expression \"length\" requires an argument of literal string or" +
-                    " literal array");
-        }
+            return ff.function("mbLength", e);
     }
 
     @Override

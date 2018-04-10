@@ -149,6 +149,12 @@ public class MBFunctionFactory implements FunctionFactory {
             f.setFallbackValue(fallback);
             return f;
         }
+        if (MBFunction_length.NAME.getFunctionName().equals(name)){
+            MBFunction_length f = new MBFunction_length();
+            f.setParameters(args);
+            f.setFallbackValue(fallback);
+            return f;
+        }
         if (MBFunction_at.NAME.getFunctionName().equals(name)){
             MBFunction_at f = new MBFunction_at();
             f.setParameters(args);
