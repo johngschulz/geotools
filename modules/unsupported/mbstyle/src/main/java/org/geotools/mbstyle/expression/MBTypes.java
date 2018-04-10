@@ -22,6 +22,8 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.opengis.filter.expression.Expression;
 
+import java.lang.reflect.Array;
+
 /**
  * The expressions in this section are provided for the purpose of testing for and converting between different
  * data types like strings, numbers, and boolean values.
@@ -49,7 +51,7 @@ public class MBTypes extends MBExpression {
      * @return
      */
     public Expression typesArray(){
-        return null;
+        return ff.function("mbType", exprList());
     }
 
     /**
@@ -61,7 +63,7 @@ public class MBTypes extends MBExpression {
      * @return
      */
     public Expression typesBoolean(){
-        return null;
+        return ff.function("mbType", exprList());
     }
 
     /**
@@ -96,7 +98,7 @@ public class MBTypes extends MBExpression {
      * @return
      */
     public Expression typesNumber(){
-        return null;
+        return ff.function("mbType", exprList());
     }
 
     /**
@@ -108,7 +110,7 @@ public class MBTypes extends MBExpression {
      * @return
      */
     public Expression typesObject(){
-        return null;
+        return ff.function("mbType", exprList());
     }
 
     /**
@@ -120,7 +122,7 @@ public class MBTypes extends MBExpression {
      * @return
      */
     public Expression typesString(){
-        return null;
+        return ff.function("mbType", exprList());
     }
 
     /**
@@ -131,7 +133,7 @@ public class MBTypes extends MBExpression {
      * @return
      */
     public Expression typesToBoolean(){
-        return null;
+        return ff.function("mbToBool", parse.string(json, 1));
     }
 
     /**
@@ -142,7 +144,7 @@ public class MBTypes extends MBExpression {
      * @return
      */
     public Expression typesToColor(){
-        return null;
+        return ff.function("mbToColor", exprList());
     }
 
     /**
@@ -156,7 +158,7 @@ public class MBTypes extends MBExpression {
      * @return
      */
     public Expression typesToNumber(){
-        return null;
+        return ff.function("mbToNumber", exprList());
     }
 
     /**
@@ -171,7 +173,7 @@ public class MBTypes extends MBExpression {
      * @return
      */
     public Expression typesToString(){
-        return null;
+        return ff.function("mbToString", parse.string(json, 1));
     }
 
     /**
@@ -181,7 +183,18 @@ public class MBTypes extends MBExpression {
      * @return
      */
     public Expression typesTypeOf(){
-        return null;
+        Expression value = parse.string(json, 1);
+        return ff.function("mbTypeOf", value);
+    }
+
+    private Expression[] exprList(){
+        // Build an array of Expression arguments for functions that accept multiple parameters.
+        Expression[] args = new Expression[json.size()];
+        for (Integer i = 0; i <= json.size() -1 ; i++) {
+            Expression obj = parse.string(json, i);
+            args[i] = obj;
+        }
+        return args;
     }
 
     @Override
