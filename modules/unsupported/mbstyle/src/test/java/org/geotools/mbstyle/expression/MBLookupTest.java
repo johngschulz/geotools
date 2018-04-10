@@ -104,8 +104,8 @@ public class MBLookupTest extends AbstractMBExpressionTest{
      * Verify that a "has" Lookup expression can be parsed correctly.
      */
     @Test
-    public void testParseHasExpression() {
-        //
+    public void testParseHasExpression() throws Exception{
+        // "has" expression test
         final JSONObject j = getObjectByLayerId("hasExpression", "paint");
         Object o = getExpressionEvaluation(j, "text-color");
         assertEquals(true, o);
@@ -122,9 +122,7 @@ public class MBLookupTest extends AbstractMBExpressionTest{
         MBStyle getTest = MBStyle.create(mbstyle);
         SymbolMBLayer rgbLayer = (SymbolMBLayer) getTest.layer("hasExpression");
         List<FeatureTypeStyle> getFeatures = rgbLayer.transformInternal(getTest);
-        try {
-            String xml = new SLDTransformer().transform(getFeatures.get(0));
-            assertTrue(xml.contains("<ogc:Function name=\"PropertyExists\"><ogc:Literal>name</ogc:Literal></ogc:Function>"));
-        } catch(Exception e) { }
+        String xml = new SLDTransformer().transform(getFeatures.get(0));
+        assertTrue(xml.contains("<ogc:Function name=\"PropertyExists\"><ogc:Literal>name</ogc:Literal></ogc:Function>"));
     }
 }
