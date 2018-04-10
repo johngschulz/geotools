@@ -58,7 +58,7 @@ public class MBLookupTest extends AbstractMBExpressionTest{
         List<FeatureTypeStyle> getFeatures = testLayer.transformInternal(getTest);
         try {
             String xml = new SLDTransformer().transform(getFeatures.get(0));
-            assertTrue(xml.contains("<ogc:PropertyName>Name</ogc:PropertyName>"));
+            assertTrue(xml.contains("<ogc:Function name=\"property\"><ogc:Literal>Name</ogc:Literal></ogc:Function>"));
         } catch(Exception e) { }
         // test nested "get expression
         final JSONObject jn = getObjectByLayerId("getExpression", "paint");
@@ -77,7 +77,7 @@ public class MBLookupTest extends AbstractMBExpressionTest{
         assertEquals("#006fde", o);
         // test nested "at" expression
         final JSONObject jn = getObjectByLayerId("atExpression", "paint");
-        Object on = getExpressionEvaluation(j, "halo-color");
+        Object on = getExpressionEvaluation(jn, "halo-color");
         assertEquals("length", on);
     }
 
@@ -96,7 +96,7 @@ public class MBLookupTest extends AbstractMBExpressionTest{
         assertEquals(9, ol);
         // test nested length expression
         final JSONObject jn = getObjectByLayerId("lengthExpression", "paint");
-        Object on = getExpressionEvaluation(j, "halo-color");
+        Object on = getExpressionEvaluation(jn, "halo-color");
         assertEquals(9, on);
     }
 

@@ -36,7 +36,7 @@
             },
             "paint": {
                 "text-color": ["get", "color",["literal", {"color": "#006fde"}]],
-                "halo-color": ["get", "text-color", ["at", 0, ["literal",[["literal",{"text-color": "RED"}], ["literal", {"other-object": "test"}]]]]]
+                "halo-color": ["get", "text-color", ["at", 0, ["literal",[{"text-color": "RED"}, {"other-object": "test"}]]]]
             }
         },
         {
@@ -50,7 +50,7 @@
             "paint": {
                 "text-color": ["has", "color", ["literal", {"color":"#006fde", "text":"text"}]],
                 "halo-color": ["has", "text-color", ["at", 1, ["get", "text",["literal",{"text":[{"unused": "test"},
-                  ["literal",{"text-color": ["length", "123456789"]}]]}]]]]
+                  {"text-color": ["length", "123456789"]}]}]]]]
             }
         },
         {

@@ -19,7 +19,6 @@ package org.geotools.mbstyle.expression;
 
 import org.geotools.mbstyle.parse.MBFormatException;
 import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
 import org.opengis.filter.expression.Expression;
 
 import java.util.List;
@@ -37,16 +36,11 @@ public class MBLookup extends MBExpression {
      * @return
      */
     public Expression lookupAt(){
-        // requires an instance of a "literal" array expression
-        if (json.size() == 3 && json.get(2) instanceof JSONArray){
-//            Expression e = ff.literal(json.get(2));
+        // requires an instance of a "literal" array expression ie. non-expression array
+        if (json.size() == 3 && parse.string(json,2) != null){
             Expression e = parse.string(json,2);
-            if (e.evaluate(null, JSONArray.class) != null) {
-                JSONArray arr = e.evaluate(null, JSONArray.class);
-                Integer at = parse.string(json, 1).evaluate(null, Integer.class);
-                Expression value = parse.string(arr, at);
-                return value;
-            }
+            Expression at = parse.string(json, 1);
+            return ff.function("mbAt", e, at);
         }
         throw new MBFormatException("The \"at\" expression requires an integer value at index 1, and a literal" +
                 " array value at index 2");
@@ -66,16 +60,12 @@ public class MBLookup extends MBExpression {
         if (json.size() == 2 || json.size() == 3) {
             if (json.size() == 2) {
                 Expression property = parse.string(json, 1);
-                String s = property.evaluate(null, String.class);
-                return ff.property(s);
+                return ff.function("property", property);
             }
             if (json.size() == 3) {
-                Expression property = parse.string(json, 1);
-                String s = (property).evaluate(null, String.class);
-                Expression e = parse.string(json, 2);
-                JSONObject jo = (e.evaluate(null, JSONObject.class));
-                Object p = jo.get(s);
-                return ff.literal(p);
+                Expression value = parse.string(json, 1);
+                Expression object = parse.string(json, 2);
+                return ff.function("mbGet", value, object);
             }
         }
         throw new MBFormatException("Expression \"get\" requires a maximum of 2 arguments.");
@@ -95,25 +85,12 @@ public class MBLookup extends MBExpression {
         if (json.size() == 2 || json.size() == 3) {
             if (json.size() == 2) {
                 Expression value = parse.string(json, 1);
-                String s = value.evaluate(null, String.class);
-                return ff.function("PropertyExists", ff.literal(s));
+                return ff.function("PropertyExists", value);
             }
             if (json.size() == 3) {
-                String svalue;
                 Expression value = parse.string(json, 1);
-                if (value.evaluate(value) instanceof String){
-                    svalue = value.evaluate(null, String.class);
-                } else{
-                    throw new MBFormatException("\"has\" requires an instance of type String for the first argument");
-                }
-                Expression e = parse.string(json, 2);
-                if (e.evaluate(e) instanceof JSONObject ){
-                    JSONObject jo = e.evaluate(null, JSONObject.class);
-                    Boolean contained = jo.containsKey(svalue);
-                    return ff.literal(contained);
-                } else{
-                    throw new MBFormatException("\"has\" requires an instance of a JSONObject for the second argument");
-                }
+                Expression object = parse.string(json, 2);
+                return ff.function("mbHas", object, value);
             }
         }
         throw new MBFormatException("Expression \"has\" requires 1 or 2 arguments " + json.size() + " arguments found");
