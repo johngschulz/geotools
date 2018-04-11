@@ -50,6 +50,7 @@ public class MBFunctionFactory implements FunctionFactory {
         functionList.add(MBFunction_coalesce.NAME);
         functionList.add(MBFunction_match.NAME);
         functionList.add(ListSizeFunction.NAME);
+        functionList.add(MBFunction_length.NAME);
         functionList.add(MBFunction_at.NAME);
         functionList.add(MBFunction_get.NAME);
         functionList.add(MBFunction_has.NAME);
