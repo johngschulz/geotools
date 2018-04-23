@@ -22,8 +22,6 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.opengis.filter.expression.Expression;
 
-import java.lang.reflect.Array;
-
 /**
  * The expressions in this section are provided for the purpose of testing for and converting between different
  * data types like strings, numbers, and boolean values.

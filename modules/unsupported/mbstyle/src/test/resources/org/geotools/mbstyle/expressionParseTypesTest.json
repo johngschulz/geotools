@@ -196,6 +196,22 @@
         "rgba-array": ["to-color", ["literal", [111, 222, 121, 0.5]]],
         "nest": ["to-color", ["get", "obj",["at", 3,["literal", ["color", true, 123, {"obj":[111,222,121]}]]]]]
       }
+    },
+    {
+      "id": "arrayExpression",
+      "type": "circle",
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "boolean": ["array", false],
+        "null": ["array", null],
+        "string": ["array", "test"],
+        "number": ["array", 123],
+        "array": ["array", ["literal", [111, 222, 121]]],
+        "object": ["array", ["literal", {"obj":"test"}]],
+        "nest": ["array", ["get", "obj",["at", 3,["literal", ["color", true, 123, {"obj":[111,222,121]}]]]]]
+      }
     }
   ]
 }

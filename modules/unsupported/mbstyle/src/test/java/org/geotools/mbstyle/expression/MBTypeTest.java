@@ -23,9 +23,7 @@ import org.junit.Test;
 
 import java.awt.*;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 public class MBTypeTest extends AbstractMBExpressionTest {
 
@@ -336,6 +334,47 @@ public class MBTypeTest extends AbstractMBExpressionTest {
         try {
             Object aFalse = getExpressionEvaluation(j, "false");
             fail("expected exception function \"mbToColor\" fails if argument can't be converted to a color");
+        } catch (IllegalArgumentException e){
+        }
+    }
+    /**
+     * Verify that the "array" MBTypes expression can be parsed and evaluated correctly.
+     */
+    @Test
+    public void testParseArrayExpression() {
+
+        final JSONObject j = getObjectByLayerId("arrayExpression", "paint");
+        JSONArray test = new JSONArray();
+        test.add(111l);
+        test.add(222l);
+        test.add(121l);
+        Object arr = getExpressionEvaluation(j, "array");
+        assertEquals(test, arr);
+
+        Object nested = getExpressionEvaluation(j, "nest");
+        assertEquals(test, nested);
+
+        try {
+            Object obj = getExpressionEvaluation(j, "boolean");
+            fail("expected exception function \"mbType\" fails if argument can't be converted to a color");
+        } catch (IllegalArgumentException e){
+        }
+
+        try {
+            Object obj = getExpressionEvaluation(j, "string");
+            fail("expected exception function \"mbType\" fails if argument can't be converted to a color");
+        } catch (IllegalArgumentException e){
+        }
+
+        try {
+            Object obj = getExpressionEvaluation(j, "number");
+            fail("expected exception function \"mbType\" fails if argument can't be converted to a color");
+        } catch (IllegalArgumentException e){
+        }
+
+        try {
+            Object obj = getExpressionEvaluation(j, "object");
+            fail("expected exception function \"mbType\" fails if argument can't be converted to a color");
         } catch (IllegalArgumentException e){
         }
     }

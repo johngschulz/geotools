@@ -20,20 +20,19 @@ import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.opengis.filter.capability.FunctionName;
 import org.opengis.filter.expression.Expression;
-
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.geotools.filter.capability.FunctionNameImpl.parameter;
-
 /**
- * Takes an object as an argument and returns the number value.
+ * Converts the input value to a number, if possible. If the input is null or false, the result is 0. If the input
+ * is true, the result is 1. If the input is a string, it is converted to a number as specified by the
+ * "ToNumber Applied to the String Type" algorithm of the ECMAScript Language Specification. If multiple values are
+ * provided, each one is evaluated in order until the first successful conversion is obtained.
+ * If none of the inputs can be converted, the expression is an error.
  */
 class MBFunction_toNumber extends FunctionExpressionImpl {
 
-    public static FunctionName NAME = new FunctionNameImpl("mbToNumber",
-            parameter("mbobject", Object.class),
-            parameter("unused", Object.class));
+    public static FunctionName NAME = new FunctionNameImpl("mbToNumber");
 
     MBFunction_toNumber() {
         super(NAME);

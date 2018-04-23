@@ -16,27 +16,31 @@
  */
 package org.geotools.mbstyle.function;
 
-import com.sun.org.apache.xerces.internal.impl.xpath.regex.Match;
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.json.simple.JSONArray;
 import org.opengis.filter.capability.FunctionName;
 import org.opengis.filter.expression.Expression;
-
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.geotools.filter.capability.FunctionNameImpl.parameter;
-
 /**
  * Takes an object as an argument and returns the color value if possible.
+ * Evaluates string in the formats of:
+ * "rgb(int, int, int)"
+ * "rgba(int, int, int, double)"
+ *
+ * And in arrays of 3 and 4 numbers for rgb and rgba colors:
+ * [int, int, int]
+ * [int, int, int, double]
+ *
+ * The integer values should be between 0-255, for red, green, and blue color values.
+ * The double value should be between 0-1, and is converted to a 0-255 alpha value.
  */
 class MBFunction_toColor extends FunctionExpressionImpl {
 
-    public static FunctionName NAME = new FunctionNameImpl("mbToColor",
-            parameter("mbobject", Object.class),
-            parameter("unused", Object.class));
+    public static FunctionName NAME = new FunctionNameImpl("mbToColor");
 
     MBFunction_toColor() {
         super(NAME);

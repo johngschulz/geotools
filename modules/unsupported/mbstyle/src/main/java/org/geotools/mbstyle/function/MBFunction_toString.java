@@ -19,22 +19,22 @@ package org.geotools.mbstyle.function;
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.opengis.filter.capability.FunctionName;
-
 import java.awt.*;
 
-import static org.geotools.filter.capability.FunctionNameImpl.parameter;
-
 /**
- * Takes an object as an argument and returns the string value.
+ * Converts the input value to a string. If the input is null, the result is "null". If the input is a boolean,
+ * the result is "true" or "false". If the input is a number, it is converted to a string as specified by the
+ * "NumberToString" algorithm of the ECMAScript Language Specification. If the input is a color, it is converted to
+ * a string of the form "rgba(r,g,b,a)", where r, g, and b are numerals ranging from 0 to 255, and a ranges from
+ * 0 to 1. Otherwise, the input is converted to a string in the format specified by the JSON.stringify function of
+ * the ECMAScript Language Specification.
  */
 class MBFunction_toString extends FunctionExpressionImpl {
     private static final String NULL = "null";
     private static final String TRUE = "true";
     private static final String FALSE = "false";
 
-    public static FunctionName NAME = new FunctionNameImpl("mbToString",
-            parameter("object", Object.class),
-            parameter("unused", Object.class));
+    public static FunctionName NAME = new FunctionNameImpl("mbToString");
 
     MBFunction_toString() {
         super(NAME);

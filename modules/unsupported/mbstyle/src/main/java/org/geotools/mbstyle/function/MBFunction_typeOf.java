@@ -20,16 +20,12 @@ import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.opengis.filter.capability.FunctionName;
 
-import static org.geotools.filter.capability.FunctionNameImpl.parameter;
-
 /**
  * Takes an object as an argument and returns the class as a string value.
  */
 class MBFunction_typeOf extends FunctionExpressionImpl {
 
-    public static FunctionName NAME = new FunctionNameImpl("mbTypeOf",
-            parameter("object", Object.class),
-            parameter("unused", Object.class));
+    public static FunctionName NAME = new FunctionNameImpl("mbTypeOf");
 
     MBFunction_typeOf() {
         super(NAME);
@@ -45,8 +41,6 @@ class MBFunction_typeOf extends FunctionExpressionImpl {
             throw new IllegalArgumentException(
                     "Filter Function problem for function equalTo argument #0 - expected type Object");
         }
-
-
         return arg0.getClass().toString();
     }
 }

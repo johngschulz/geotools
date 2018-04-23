@@ -20,18 +20,17 @@ import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.opengis.filter.capability.FunctionName;
 
-import static org.geotools.filter.capability.FunctionNameImpl.parameter;
-
 /**
- * Takes an object as an argument and returns a boolean value.
+ * Take an object as an argument and returns a boolean value.
  * The result is false when then input is an empty string, 0, false, null,
  * or NaN; otherwise it is true.
+ *
+ * This function is a helper to accommodate MBType expressions. Expressions in this section are provided for the purpose of
+ * testing for and converting between different data types like strings, numbers, and boolean values.
  */
 class MBFunction_toBool extends FunctionExpressionImpl {
 
-    public static FunctionName NAME = new FunctionNameImpl("mbToBool",
-            parameter("object", Object.class),
-            parameter("unused", Object.class));
+    public static FunctionName NAME = new FunctionNameImpl("mbToBool");
 
     MBFunction_toBool() {
         super(NAME);
@@ -47,19 +46,22 @@ class MBFunction_toBool extends FunctionExpressionImpl {
             throw new IllegalArgumentException(
                     "Filter Function problem for function mbToBool argument #0 - expected type Object");
         }
+        if (arg0 == null) {
+            return Boolean.FALSE;
+        }
+        if (arg0 instanceof Double && ((Double) arg0).isNaN()){
+            return Boolean.FALSE;
+        }
+        if (Number.class.isAssignableFrom(arg0.getClass()) && ((Number)arg0).doubleValue() == 0d){
+            return Boolean.FALSE;
+        }
         if (arg0 instanceof Boolean && (Boolean) arg0 == false){
             return Boolean.FALSE;
         }
         if (arg0 == null){
             return Boolean.FALSE;
         }
-        if (Number.class.isAssignableFrom(arg0.getClass()) && ((Long)arg0).longValue() == 0L){
-            return Boolean.FALSE;
-        }
         if (arg0 instanceof String && ((String)arg0).isEmpty()){
-            return Boolean.FALSE;
-        }
-        if (arg0 instanceof Double && ((Double) arg0).isNaN()){
             return Boolean.FALSE;
         }
         return Boolean.TRUE;

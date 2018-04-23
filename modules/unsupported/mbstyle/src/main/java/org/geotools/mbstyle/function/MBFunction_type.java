@@ -21,12 +21,9 @@ import org.geotools.filter.capability.FunctionNameImpl;
 import org.json.simple.JSONObject;
 import org.opengis.filter.capability.FunctionName;
 import org.opengis.filter.expression.Expression;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
-import static org.geotools.filter.capability.FunctionNameImpl.parameter;
 
 /**
  * Takes one or more arguments and returns the the first argument of type specified by the first string argument,
@@ -35,9 +32,7 @@ import static org.geotools.filter.capability.FunctionNameImpl.parameter;
 class MBFunction_type extends FunctionExpressionImpl {
     Class type;
 
-    public static FunctionName NAME = new FunctionNameImpl("mbType",
-            parameter("argTypes", Object.class),
-            parameter("unused", Object.class));
+    public static FunctionName NAME = new FunctionNameImpl("mbType");
 
     MBFunction_type() {
         super(NAME);
