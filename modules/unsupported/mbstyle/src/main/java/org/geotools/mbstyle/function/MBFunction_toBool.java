@@ -58,9 +58,6 @@ class MBFunction_toBool extends FunctionExpressionImpl {
         if (arg0 instanceof Boolean && (Boolean) arg0 == false){
             return Boolean.FALSE;
         }
-        if (arg0 == null){
-            return Boolean.FALSE;
-        }
         if (arg0 instanceof String && ((String)arg0).isEmpty()){
             return Boolean.FALSE;
         }
