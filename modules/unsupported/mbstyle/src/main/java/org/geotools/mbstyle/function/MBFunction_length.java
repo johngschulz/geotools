@@ -40,6 +40,7 @@ public class MBFunction_length extends FunctionExpressionImpl {
         super(NAME);
     }
 
+    @Override
     public Object evaluate(Object feature) {
         Object arg0;
         Function f = null;
@@ -52,8 +53,7 @@ public class MBFunction_length extends FunctionExpressionImpl {
             if (arg0 instanceof String) {
                 f = ff.function("strLength", getExpression(0));
             }
-        } catch (Exception e) // probably a type error
-        {
+        } catch (Exception e) { // probably a type error
             throw new IllegalArgumentException(
                     "Filter Function problem for function listSize argument #0 - expected type List");
         }

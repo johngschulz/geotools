@@ -41,8 +41,7 @@ class MBFunction_toBool extends FunctionExpressionImpl {
 
         try { // attempt to get value and perform conversion
             arg0 = getExpression(0).evaluate(feature);
-        } catch (Exception e) // probably a type error
-        {
+        } catch (Exception e) { // probably a type error
             throw new IllegalArgumentException(
                     "Filter Function problem for function mbToBool argument #0 - expected type Object");
         }

@@ -60,7 +60,8 @@ import java.util.List;
  *   </tr>
  * </table>
  * </p>
- */class MBFunction_any extends FunctionExpressionImpl {
+ */
+class MBFunction_any extends FunctionExpressionImpl {
 
     public static FunctionName NAME = new FunctionNameImpl("mbAny",
         parameter("mbAny", Boolean.class),
