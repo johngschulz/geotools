@@ -14,47 +14,48 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
+
 package org.geotools.mbstyle.function;
 
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
-import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.opengis.filter.capability.FunctionName;
 
 import static org.geotools.filter.capability.FunctionNameImpl.parameter;
 
 /**
- * Returns the value in a JSONArray at a given index.
+ * Returns the value of a given object key in a JSONObject.
  */
-public class MBFunction_at extends FunctionExpressionImpl {
-    public static FunctionName NAME = new FunctionNameImpl("mbAt",
-            parameter("array", JSONArray.class),
-            parameter("index", Integer.class),
+public class GetFunction extends FunctionExpressionImpl {
+    public static FunctionName NAME = new FunctionNameImpl("get",
+            parameter("value", String.class),
+            parameter("object", JSONObject.class),
             parameter("fallback", Object.class));
 
-    public MBFunction_at() {
+    public GetFunction() {
         super(NAME);
     }
 
     @Override
     public Object evaluate(Object feature) {
-        JSONArray arg0;
-        Integer arg1;
+        String arg0;
+        JSONObject arg1;
 
         try { // attempt to get value and perform conversion
-            arg0 = getExpression(0).evaluate(feature, JSONArray.class);
+            arg0 = getExpression(0).evaluate(feature, String.class);
 
         } catch (Exception e) { // probably a type error
             throw new IllegalArgumentException(
-                    "Filter Function problem for function mbAt argument #0 - expected type JSONArray");
+                    "Filter Function problem for function mbGet argument #0 - expected type String");
         }
         try { // attempt to get value and perform conversion
-            arg1 = getExpression(1).evaluate(feature, Integer.class);
+            arg1 = getExpression(1).evaluate(feature, JSONObject.class);
 
         } catch (Exception e) { // probably a type error
             throw new IllegalArgumentException(
-                    "Filter Function problem for function mbAt argument #1 - expected type Integer");
+                    "Filter Function problem for function mbGet argument #1 - expected type JSONObject");
         }
-        return arg0.get(arg1);
+        return arg1.get(arg0);
     }
 }

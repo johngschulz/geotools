@@ -14,49 +14,47 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-
 package org.geotools.mbstyle.function;
 
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
-import org.json.simple.JSONObject;
+import org.json.simple.JSONArray;
 import org.opengis.filter.capability.FunctionName;
 
 import static org.geotools.filter.capability.FunctionNameImpl.parameter;
 
 /**
- * Evaluate to TRUE if a JSONObject contains a given key value or FALSE if it does not.
+ * Returns the value in a JSONArray at a given index.
  */
-public class MBFunction_has extends FunctionExpressionImpl {
-    public static FunctionName NAME = new FunctionNameImpl("mbHas",
-            parameter("value", String.class),
-            parameter("object", JSONObject.class),
+public class AtFunction extends FunctionExpressionImpl {
+    public static FunctionName NAME = new FunctionNameImpl("at",
+            parameter("array", JSONArray.class),
+            parameter("index", Integer.class),
             parameter("fallback", Object.class));
 
-    public MBFunction_has() {
+    public AtFunction() {
         super(NAME);
     }
 
     @Override
     public Object evaluate(Object feature) {
-        String arg0;
-        JSONObject arg1;
+        JSONArray arg0;
+        Integer arg1;
 
         try { // attempt to get value and perform conversion
-            arg0 = getExpression(0).evaluate(feature, String.class);
+            arg0 = getExpression(0).evaluate(feature, JSONArray.class);
 
         } catch (Exception e) { // probably a type error
             throw new IllegalArgumentException(
-                    "Filter Function problem for function mbHas argument #1 - expected type String");
+                    "Filter Function problem for function mbAt argument #0 - expected type JSONArray");
         }
         try { // attempt to get value and perform conversion
-            arg1 = getExpression(1).evaluate(feature, JSONObject.class);
+            arg1 = getExpression(1).evaluate(feature, Integer.class);
 
         } catch (Exception e) { // probably a type error
             throw new IllegalArgumentException(
-                    "Filter Function problem for function mbHas argument #0 - expected type JSONObject");
+                    "Filter Function problem for function mbAt argument #1 - expected type Integer");
         }
-
-        return arg1.containsKey(arg0);
+        return arg0.get(arg1);
     }
 }

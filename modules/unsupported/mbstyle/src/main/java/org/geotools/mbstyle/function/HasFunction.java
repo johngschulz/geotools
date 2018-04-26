@@ -14,33 +14,49 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
+
 package org.geotools.mbstyle.function;
 
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
+import org.json.simple.JSONObject;
 import org.opengis.filter.capability.FunctionName;
 
+import static org.geotools.filter.capability.FunctionNameImpl.parameter;
+
 /**
- * Takes an object as an argument and returns the class as a string value.
+ * Evaluate to TRUE if a JSONObject contains a given key value or FALSE if it does not.
  */
-class MBFunction_typeOf extends FunctionExpressionImpl {
+public class HasFunction extends FunctionExpressionImpl {
+    public static FunctionName NAME = new FunctionNameImpl("has",
+            parameter("value", String.class),
+            parameter("object", JSONObject.class),
+            parameter("fallback", Object.class));
 
-    public static FunctionName NAME = new FunctionNameImpl("mbTypeOf");
-
-    MBFunction_typeOf() {
+    public HasFunction() {
         super(NAME);
     }
 
     @Override
     public Object evaluate(Object feature) {
-        Object arg0;
+        String arg0;
+        JSONObject arg1;
 
         try { // attempt to get value and perform conversion
-            arg0 = getExpression(0).evaluate(feature);
+            arg0 = getExpression(0).evaluate(feature, String.class);
+
         } catch (Exception e) { // probably a type error
             throw new IllegalArgumentException(
-                    "Filter Function problem for function equalTo argument #0 - expected type Object");
+                    "Filter Function problem for function mbHas argument #1 - expected type String");
         }
-        return arg0.getClass().toString();
+        try { // attempt to get value and perform conversion
+            arg1 = getExpression(1).evaluate(feature, JSONObject.class);
+
+        } catch (Exception e) { // probably a type error
+            throw new IllegalArgumentException(
+                    "Filter Function problem for function mbHas argument #0 - expected type JSONObject");
+        }
+
+        return arg1.containsKey(arg0);
     }
 }

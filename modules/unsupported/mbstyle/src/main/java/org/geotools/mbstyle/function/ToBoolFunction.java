@@ -28,14 +28,15 @@ import org.opengis.filter.capability.FunctionName;
  * This function is a helper to accommodate MBType expressions. Expressions in this section are provided for the purpose of
  * testing for and converting between different data types like strings, numbers, and boolean values.
  */
-class MBFunction_toBool extends FunctionExpressionImpl {
+class ToBoolFunction extends FunctionExpressionImpl {
 
-    public static FunctionName NAME = new FunctionNameImpl("mbToBool");
+    public static FunctionName NAME = new FunctionNameImpl("toBool");
 
-    MBFunction_toBool() {
+    ToBoolFunction() {
         super(NAME);
     }
 
+    @Override
     public Object evaluate(Object feature) {
         Object arg0;
 

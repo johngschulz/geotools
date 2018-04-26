@@ -29,12 +29,12 @@ import java.util.List;
  * Takes one or more arguments and returns the the first argument of type specified by the first string argument,
  * throws an exception if no arguments are of type specified.
  */
-class MBFunction_type extends FunctionExpressionImpl {
+class MapBoxTypeFunction extends FunctionExpressionImpl {
     Class type;
 
     public static FunctionName NAME = new FunctionNameImpl("mbType");
 
-    MBFunction_type() {
+    MapBoxTypeFunction() {
         super(NAME);
     }
 

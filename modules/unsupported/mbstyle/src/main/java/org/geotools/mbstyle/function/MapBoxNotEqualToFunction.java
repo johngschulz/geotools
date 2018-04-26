@@ -16,22 +16,20 @@
  */
 package org.geotools.mbstyle.function;
 
-import static org.geotools.filter.capability.FunctionNameImpl.parameter;
-
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.opengis.filter.capability.FunctionName;
 
 /**
- * MapBox Expression function that returns {@link java.lang.Boolean#TRUE} if two expressions are equivalent,
- * {@link java.lang.Boolean#FALSE} otherwise. It is slightly different from the GeoTools "equalTo" function as it treats
- * NULLs as equal (instead of not equal), and it does not compare Object.toString() values, which would result in false
- * equivalences for things like Boolean.TRUE compared to the literal string "true".
+ * MapBox Expression function that returns {@link java.lang.Boolean#FALSE} if two expressions are equivalent,
+ * {@link java.lang.Boolean#TRUE} otherwise. It is slightly different from the GeoTools "notEqualTo" function as it
+ * treats NULLs as equal (instead of not equal), and it does not compare Object.toString() values, which would result in
+ * false equivalences for things like Boolean.TRUE compared to the literal string "true".
  * <p>
  * Format:
  * </p>
  * <pre>
- *     ["mbEqualTo", &lt;expression&gt;, &lt;expression&gt;]
+ *     ["mbNotEqualTo", &lt;expression&gt;, &lt;expression&gt;]
  * </pre>
  * <p>
  * Examples:
@@ -43,32 +41,29 @@ import org.opengis.filter.capability.FunctionName;
  *     <th align="center">Output</th>
  *   </tr>
  *   <tr>
- *     <td>["mbEqualTo", "aString", "aString"]</td>
- *     <td align="center">true</td>
- *   </tr>
- *   <tr>
- *     <td>["mbEqualTo", null, null]</td>
- *     <td align="center">true</td>
- *   </tr>
- *   <tr>
- *     <td>["mbEqualTo", true, "true"]</td>
+ *     <td>["mbNotEqualTo", "aString", "aString"]</td>
  *     <td align="center">false</td>
  *   </tr>
  *   <tr>
- *     <td>["mbEqualTo", 5, 5.0]</td>
+ *     <td>["mbNotEqualTo", null, null]</td>
+ *     <td align="center">false</td>
+ *   </tr>
+ *   <tr>
+ *     <td>["mbNotEqualTo", true, "true"]</td>
  *     <td align="center">true</td>
+ *   </tr>
+ *   <tr>
+ *     <td>["mbNotEqualTo", 5, 5.0]</td>
+ *     <td align="center">false</td>
  *   </tr>
  * </table>
  * </p>
  */
-class MBFunction_equalTo extends FunctionExpressionImpl {
+class MapBoxNotEqualToFunction extends FunctionExpressionImpl {
 
-    public static FunctionName NAME = new FunctionNameImpl("mbEqualTo",
-            parameter("mbEqualTo", Boolean.class),
-            parameter("a", Object.class),
-            parameter("b", Object.class));
+    public static FunctionName NAME = new FunctionNameImpl("mbNotEqualTo");
 
-    MBFunction_equalTo() {
+    MapBoxNotEqualToFunction() {
         super(NAME);
     }
 
@@ -94,6 +89,6 @@ class MBFunction_equalTo extends FunctionExpressionImpl {
                     "Filter Function problem for function equalTo argument #1 - expected type Object");
         }
 
-        return MBFunctionUtil.argsEqual(arg0, arg1);
+        return !MBFunctionUtil.argsEqual(arg0, arg1);
     }
 }

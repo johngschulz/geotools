@@ -29,14 +29,14 @@ import java.awt.*;
  * 0 to 1. Otherwise, the input is converted to a string in the format specified by the JSON.stringify function of
  * the ECMAScript Language Specification.
  */
-class MBFunction_toString extends FunctionExpressionImpl {
+class ToStringFunction extends FunctionExpressionImpl {
     private static final String NULL = "null";
     private static final String TRUE = "true";
     private static final String FALSE = "false";
 
-    public static FunctionName NAME = new FunctionNameImpl("mbToString");
+    public static FunctionName NAME = new FunctionNameImpl("toString");
 
-    MBFunction_toString() {
+    ToStringFunction() {
         super(NAME);
     }
 

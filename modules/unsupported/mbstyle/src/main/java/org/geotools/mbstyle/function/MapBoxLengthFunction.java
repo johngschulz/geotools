@@ -1,3 +1,4 @@
+package org.geotools.mbstyle.function;
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
@@ -15,47 +16,51 @@
  *    Lesser General Public License for more details.
  */
 
-package org.geotools.mbstyle.function;
-
+import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
-import org.json.simple.JSONObject;
+import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.capability.FunctionName;
+import org.opengis.filter.expression.Function;
+
+import java.util.Collection;
 
 import static org.geotools.filter.capability.FunctionNameImpl.parameter;
 
 /**
- * Returns the value of a given object key in a JSONObject.
+ * Returns the size of a list or the length of a string
  */
-public class MBFunction_get extends FunctionExpressionImpl {
-    public static FunctionName NAME = new FunctionNameImpl("mbGet",
-            parameter("value", String.class),
-            parameter("object", JSONObject.class),
+public class MapBoxLengthFunction extends FunctionExpressionImpl {
+    public FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+    public static FunctionName NAME = new FunctionNameImpl("mbLength",
+            parameter("object", Object.class),
             parameter("fallback", Object.class));
 
-    public MBFunction_get() {
+    public MapBoxLengthFunction() {
         super(NAME);
     }
 
     @Override
     public Object evaluate(Object feature) {
-        String arg0;
-        JSONObject arg1;
+        Object arg0;
+        Function f = null;
 
         try { // attempt to get value and perform conversion
-            arg0 = getExpression(0).evaluate(feature, String.class);
-
+            arg0 = getExpression(0).evaluate(feature);
+            if (arg0 instanceof Collection) {
+                f = ff.function("listSize", getExpression(0));
+            }
+            if (arg0 instanceof String) {
+                f = ff.function("strLength", getExpression(0));
+            }
         } catch (Exception e) { // probably a type error
             throw new IllegalArgumentException(
-                    "Filter Function problem for function mbGet argument #0 - expected type String");
+                    "Filter Function problem for function listSize argument #0 - expected type List");
         }
-        try { // attempt to get value and perform conversion
-            arg1 = getExpression(1).evaluate(feature, JSONObject.class);
-
-        } catch (Exception e) { // probably a type error
-            throw new IllegalArgumentException(
-                    "Filter Function problem for function mbGet argument #1 - expected type JSONObject");
+        if (f != null) {
+            return f.evaluate(feature);
+        } else {
+            throw new IllegalArgumentException("Cannot evaluate args");
         }
-        return arg1.get(arg0);
     }
 }

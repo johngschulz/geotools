@@ -38,11 +38,11 @@ import java.util.List;
  * The integer values should be between 0-255, for red, green, and blue color values.
  * The double value should be between 0-1, and is converted to a 0-255 alpha value.
  */
-class MBFunction_toColor extends FunctionExpressionImpl {
+class ToColorFunction extends FunctionExpressionImpl {
 
-    public static FunctionName NAME = new FunctionNameImpl("mbToColor");
+    public static FunctionName NAME = new FunctionNameImpl("toColor");
 
-    MBFunction_toColor() {
+    ToColorFunction() {
         super(NAME);
     }
 
